@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hello_flutter/screens/history_screen.dart';
 import 'package:hello_flutter/screens/home_screen.dart';
 
 
@@ -14,7 +15,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   final List<Widget> appScreens = [
     const HomeScreen(),
-    const Center(child: Text("History")),
+    const HistoryScreen(),
     const Center(child: Text("Profile")),
   ];
 
@@ -31,9 +32,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Center(child:  Text("BrotConnect")),
-      ),
+
       body:Center(child: appScreens[_selectedIndex]),
 
       bottomNavigationBar: BottomNavigationBar(
