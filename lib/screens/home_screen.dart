@@ -17,7 +17,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final greenhouses = context.watch<GreenhouseRepository>().getAll();
+    context.read<MqttService>();
+    final greenhouses = context.read<GreenhouseRepository>().getAll();
 
     return Scaffold(
       backgroundColor: AppStyles.backgroundColor,

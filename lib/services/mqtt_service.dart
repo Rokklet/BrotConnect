@@ -12,12 +12,11 @@ class MqttService extends ChangeNotifier {
   MqttServerClient('broker.hivemq.com', '');
   bool _connected = false;
 
+
+
   // Datos
   final GreenhouseRepository repo;
 
-  // final Map<String, double> _temperature = {};
-  // final Map<String, double> _humidity = {};
-  // final Map<String, bool> _lighton = {};
 
   MqttService(this.repo) {
     _connect();
@@ -51,7 +50,6 @@ class MqttService extends ChangeNotifier {
     }
 
     final greenhouses = repo.getAll();
-    print("object");
 
 
     for (final gh in greenhouses) {
@@ -105,6 +103,8 @@ class MqttService extends ChangeNotifier {
     final greenhouseId = parts[1];
     final type = parts[2];
 
+    repo.ensureGreenhouse(greenhouseId);
+    
     switch(type){
       case 'temperature':
         repo.updateTemperature(greenhouseId, double.tryParse(payload) ?? 0);
@@ -124,31 +124,37 @@ class MqttService extends ChangeNotifier {
         break;
 
     }
-
     print(type);
-
-
-    // if (type == 'temperature') {
-    //   _temperature[greenhouseId] =
-    //       double.tryParse(payload) ?? 0;
-    //   notifyListeners();
-    // }
-    //
-    // if (type == 'humidity') {
-    //   _humidity[greenhouseId] =
-    //       double.tryParse(payload) ?? 0;
-    //   notifyListeners();
-    // }
-    //
-    // if (type == 'lighton'){
-    //   _lighton[greenhouseId] =
-    //       payload == '1';
-    //   notifyListeners();
-    // }
-
-
   }
 
-  
+  //Publicaciones
+
+  void publishLight(String greenhouseId, bool turnOn){
+    if (!_connected) return;
+    
+    final builder = MqttClientPayloadBuilder();
+    builder.addString(turnOn ? '1' : '0');
+    
+    client.publishMessage('greenhouse/$greenhouseId/cmd/light',
+        MqttQos.atLeastOnce,
+        builder.payload!);
+
+    print('CMD light -> ${turnOn ? 'ON' : 'OFF'}');
+  }
+
+  void publishCooler(String greenhouseId, bool turnOn){
+    if (!_connected) return;
+
+    final builder = MqttClientPayloadBuilder();
+    builder.addString(turnOn ? '1' : '0');
+
+    client.publishMessage('greenhouse/$greenhouseId/cmd/cooler',
+        MqttQos.atLeastOnce,
+        builder.payload!);
+
+    print('CMD cooler -> ${turnOn ? 'ON' : 'OFF'}');
+  }
+
+
 }
 

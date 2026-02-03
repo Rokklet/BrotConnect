@@ -106,10 +106,10 @@ class GreenhouseRepository extends ChangeNotifier {
 
 
   Future<void> loadFromLocal() async {
-    // SharedPreferences
+
   }
 
   Future<void> saveToLocal() async {
-    // persistencia más adelante
+
   }
 }

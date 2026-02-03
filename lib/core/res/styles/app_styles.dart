@@ -29,4 +29,23 @@ class AppStyles {
       fontSize: 17,
       fontWeight: FontWeight.w500
   );
+
+  static TextStyle textLineStyle3 = const TextStyle(
+    fontSize: 10,
+    fontWeight: FontWeight.bold,
+    color: Colors.white
+  );
+
+  static TextStyle textLineStyle2 = const TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.bold,
+      color: Colors.white
+  );
+
+  static TextStyle textLineStyle1 = const TextStyle(
+      fontSize: 25,
+      fontWeight: FontWeight.bold,
+      color: Colors.white
+  );
+
 }
