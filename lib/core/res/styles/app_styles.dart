@@ -30,6 +30,12 @@ class AppStyles {
       fontWeight: FontWeight.w500
   );
 
+  static TextStyle textLineStyle4 = const TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      color: Colors.white
+  );
+
   static TextStyle textLineStyle3 = const TextStyle(
     fontSize: 10,
     fontWeight: FontWeight.bold,

@@ -5,8 +5,8 @@ import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'dart:convert';
 
-
 class MqttService extends ChangeNotifier {
+
   // Cliente
   final  client =
   MqttServerClient('broker.hivemq.com', '');
@@ -29,6 +29,10 @@ class MqttService extends ChangeNotifier {
     client.keepAlivePeriod = 20;
     client.connectTimeoutPeriod = 2000;
     client.port = 1883;
+
+    client.autoReconnect = true;
+    client.keepAlivePeriod = 20;
+
 
     final connMess = MqttConnectMessage()
         .withClientIdentifier('flutter_test_client')
@@ -104,6 +108,8 @@ class MqttService extends ChangeNotifier {
     final type = parts[2];
 
     repo.ensureGreenhouse(greenhouseId);
+
+    print("llego ${type}");
     
     switch(type){
       case 'temperature':
@@ -155,6 +161,22 @@ class MqttService extends ChangeNotifier {
     print('CMD cooler -> ${turnOn ? 'ON' : 'OFF'}');
   }
 
+  void publishConfig(String greenhouseId, Map<String, dynamic> config){
+    debugPrint("publishConfig llamada");
 
+    if (client.connectionStatus?.state != MqttConnectionState.connected) {
+      debugPrint("No conectado al broker");
+      return;
+    }
+
+    final builder = MqttClientPayloadBuilder();
+    builder.addString(jsonEncode(config));
+
+    client.publishMessage(
+      'greenhouse/$greenhouseId/config',
+      MqttQos.atLeastOnce,
+      builder.payload!,
+      retain: true,
+    );
+  }
 }
-
